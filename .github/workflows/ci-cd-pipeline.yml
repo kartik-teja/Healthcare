@@ -21,15 +21,21 @@ jobs:
 
       - name: Build frontend Docker image
         run: docker build -t myapp-frontend:latest ./frontend
+      
+      - name: Tag backend Docker image
+        run: docker tag myapp-backend:latest "${{ secrets.DOCKER_USERNAME }}"/healthcare-backend:latest
 
+      - name: Tag frontend Docker image
+        run: docker tag myapp-frontend:latest "${{ secrets.DOCKER_USERNAME }}"/healthcare-frontend:latest
+  
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Push backend Docker image
-        run: docker push myapp-backend:latest "${{ secrets.DOCKER_USERNAME }}"/healthcare-backend:tagname
+        run: docker push "${{ secrets.DOCKER_USERNAME }}"/healthcare-backend:tagname
 
       - name: Push frontend Docker image
-        run: docker push myapp-frontend:latest "${{ secrets.DOCKER_USERNAME }}"/healthcare-frontend:tagname
+        run: docker push "${{ secrets.DOCKER_USERNAME }}"/healthcare-frontend:tagname
 
       - name: Deploy to server
         run: |
