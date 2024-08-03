@@ -38,7 +38,7 @@ jobs:
           docker pull myapp-frontend:latest
           docker-compose -f /path/to/your/docker-compose.yml up -d
           EOF
-      
+
       - name: Notify Slack
         uses: rtCamp/action-slack-notify@v2
         env:
@@ -46,13 +46,6 @@ jobs:
           SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
           SLACK_MESSAGE: 'Deployment ${{ job.status }} for commit ${{ github.sha }}'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-
-env:
-  DB_NAME: ${{ secrets.DB_NAME }}
-  DB_USER: ${{ secrets.DB_USER }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  DB_HOST: ${{ secrets.DB_HOST }}
-
 
   test:
     runs-on: ubuntu-latest
@@ -63,3 +56,9 @@ env:
 
       - name: Run tests
         run: npm test
+
+env:
+  DB_NAME: ${{ secrets.DB_NAME }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_HOST: ${{ secrets.DB_HOST }}
