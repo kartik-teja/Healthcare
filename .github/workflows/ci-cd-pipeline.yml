@@ -32,10 +32,10 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Push backend Docker image
-        run: docker push "${{ secrets.DOCKER_USERNAME }}"/healthcare-backend:tagname
+        run: docker push "${{ secrets.DOCKER_USERNAME }}"/healthcare-backend:latest
 
       - name: Push frontend Docker image
-        run: docker push "${{ secrets.DOCKER_USERNAME }}"/healthcare-frontend:tagname
+        run: docker push "${{ secrets.DOCKER_USERNAME }}"/healthcare-frontend:latest
 
       - name: Deploy to server
         run: |
