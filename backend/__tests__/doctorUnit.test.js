@@ -4,6 +4,8 @@ const { describe, it, expect, beforeEach } = require('@jest/globals');
 const sinon = require('sinon');
 const { Model } = require('sequelize');
 const DoctorsModel = require('../models/Doctors');
+const salt = await bcrypt.genSalt(10);
+
 
 describe('Doctors Model - Unit Tests', () => {
   let Doctors;
@@ -27,7 +29,7 @@ describe('Doctors Model - Unit Tests', () => {
     expect(doctor.email).toBe('john.doe@example.com');
     expect(doctor.phone).toBe('123-456-7890');
     expect(doctor.address).toBe('123 Main St, Anytown, USA');
-    expect(doctor.password).toBe('securepassword');
+    expect(doctor.password).toBe(await bcrypt.hash('securepassword', salt));
   });
 
   it('should throw an error with an invalid email', async () => {
