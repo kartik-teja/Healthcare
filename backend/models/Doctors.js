@@ -4,7 +4,7 @@ const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 module.exports = (sequelize) => {
-    class Doctors extends Model {
+    class doctors extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -12,11 +12,11 @@ module.exports = (sequelize) => {
          */
         static associate(models) {
             // Define associations here
-            // e.g., Doctors.hasMany(models.Appointments);
+            // e.g., doctors.hasMany(models.appointments);
         }
     }
 
-    Doctors.init(
+    doctors.init(
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -54,7 +54,7 @@ module.exports = (sequelize) => {
         },
         {
             sequelize,
-            modelName: 'Doctors',
+            modelName: 'doctors',
             hooks: {
                 beforeCreate: async (doctor, options) => {
                     if (doctor.password) {
@@ -78,5 +78,5 @@ module.exports = (sequelize) => {
         }
     );
 
-    return Doctors;
+    return doctors;
 };

@@ -3,17 +3,17 @@
 const { describe, it, expect, beforeEach } = require('@jest/globals');
 const sinon = require('sinon');
 const { Model } = require('sequelize');
-const PatientsModel = require('../models/Patients');
+const patientsModel = require('../models/Patients');
 
-describe('Patients Model - Unit Tests', () => {
-    let Patients;
+describe('patients Model - Unit Tests', () => {
+    let patients;
 
     beforeEach(() => {
-        Patients = PatientsModel({});
+        patients = patientsModel({});
     });
 
     it('should validate patient details', async () => {
-        const patient = Patients.build({
+        const patient = patients.build({
             name: 'John Doe',
             email: 'john.doe@example.com',
             password: 'securepassword',
@@ -25,7 +25,7 @@ describe('Patients Model - Unit Tests', () => {
     });
 
     it('should throw an error with an invalid email', async () => {
-        const invalidEmailPatient = Patients.build({
+        const invalidEmailPatient = patients.build({
             name: 'Jane Doe',
             email: 'invalidemail',
             password: 'securepassword',
@@ -37,7 +37,7 @@ describe('Patients Model - Unit Tests', () => {
     it('should save a patient', async () => {
         const saveStub = sinon.stub(Model.prototype, 'save').resolvesThis();
 
-        const patient = Patients.build({
+        const patient = patients.build({
             name: 'John Doe',
             email: 'john.doe@example.com',
             password: 'securepassword',
@@ -52,7 +52,7 @@ describe('Patients Model - Unit Tests', () => {
     it('should destroy a patient', async () => {
         const destroyStub = sinon.stub(Model.prototype, 'destroy').resolves();
 
-        const patient = Patients.build({
+        const patient = patients.build({
             name: 'John Doe',
             email: 'john.doe@example.com',
             password: 'securepassword',

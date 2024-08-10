@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Sidebar from '../../Common/SideBar';
-import Orders from '../../Common/meds';
+import orders from '../../Common/meds';
 import MedicineSchedule from './medicines';
 
 const LandingScreen = () => {
@@ -35,9 +35,9 @@ const LandingScreen = () => {
                     <div className='w-45 p-4'>Medicines
                         <MedicineSchedule />
                     </div>
-                    <div className='w-45 p-4'><div className='p-4'>Appointments</div>
-                        <div className='p-4'>Orders
-                            <Orders /></div></div>
+                    <div className='w-45 p-4'><div className='p-4'>appointments</div>
+                        <div className='p-4'>orders
+                            <orders /></div></div>
                 </div></div>
 
         </>

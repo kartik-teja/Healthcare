@@ -3,19 +3,19 @@
 const { describe, it, expect, beforeEach } = require('@jest/globals');
 const sinon = require('sinon');
 const { Model } = require('sequelize');
-const DoctorsModel = require('../models/Doctors');
-const salt = await bcrypt.genSalt(10);
+const doctorsModel = require('../models/Doctors');
+const salt = async () => { await bcrypt.genSalt(10) };
 
 
-describe('Doctors Model - Unit Tests', () => {
-  let Doctors;
+describe('doctors Model - Unit Tests', () => {
+  let doctors;
 
   beforeEach(() => {
-    Doctors = DoctorsModel({});
+    doctors = doctorsModel({});
   });
 
   it('should validate the doctor details', async () => {
-    const doctor = Doctors.build({
+    const doctor = doctors.build({
       name: 'Dr. John Doe',
       specialisation: 'Cardiology',
       email: 'john.doe@example.com',
@@ -29,11 +29,11 @@ describe('Doctors Model - Unit Tests', () => {
     expect(doctor.email).toBe('john.doe@example.com');
     expect(doctor.phone).toBe('123-456-7890');
     expect(doctor.address).toBe('123 Main St, Anytown, USA');
-    expect(doctor.password).toBe(await bcrypt.hash('securepassword', salt));
+    expect(await bcrypt.hash('securepassword', salt)).toBe(true);
   });
 
   it('should throw an error with an invalid email', async () => {
-    const invalidEmailDoctor = Doctors.build({
+    const invalidEmailDoctor = doctors.build({
       name: 'Dr. Jane Doe',
       specialisation: 'Neurology',
       email: 'invalidemail',
@@ -48,7 +48,7 @@ describe('Doctors Model - Unit Tests', () => {
   it('should save a doctor', async () => {
     const saveStub = sinon.stub(Model.prototype, 'save').resolvesThis();
 
-    const doctor = Doctors.build({
+    const doctor = doctors.build({
       name: 'Dr. John Doe',
       specialisation: 'Cardiology',
       email: 'john.doe@example.com',
@@ -66,7 +66,7 @@ describe('Doctors Model - Unit Tests', () => {
   it('should destroy a doctor', async () => {
     const destroyStub = sinon.stub(Model.prototype, 'destroy').resolves();
 
-    const doctor = Doctors.build({
+    const doctor = doctors.build({
       name: 'Dr. John Doe',
       specialisation: 'Cardiology',
       email: 'john.doe@example.com',

@@ -2,14 +2,14 @@
 
 const { Sequelize } = require('sequelize');
 const { beforeAll, afterAll, describe, it, expect } = require('@jest/globals');
-const OrdersModel = require('../models/Order');
+const ordersModel = require('../models/Order');
 
 let sequelize;
-let Orders;
+let orders;
 
 beforeAll(async () => {
     sequelize = new Sequelize('sqlite::memory:', { logging: false });
-    Orders = OrdersModel(sequelize);
+    orders = ordersModel(sequelize);
 
     await sequelize.sync();
 });
@@ -18,9 +18,9 @@ afterAll(async () => {
     await sequelize.close();
 });
 
-describe('Orders Model - Integration Tests', () => {
+describe('orders Model - Integration Tests', () => {
     it('should create an order with default status', async () => {
-        const order = await Orders.create({
+        const order = await orders.create({
             address: '123 Main St',
             items: [{ productId: 1, quantity: 2 }],
             userId: 1,
@@ -35,7 +35,7 @@ describe('Orders Model - Integration Tests', () => {
 
     it('should not create an order with empty items', async () => {
         await expect(
-            Orders.create({
+            orders.create({
                 address: '123 Main St',
                 items: [],
                 userId: 1,
@@ -44,7 +44,7 @@ describe('Orders Model - Integration Tests', () => {
     });
 
     it('should create an order with a specified status', async () => {
-        const order = await Orders.create({
+        const order = await orders.create({
             address: '123 Main St',
             status: 'processing',
             items: [{ productId: 1, quantity: 2 }],
@@ -56,7 +56,7 @@ describe('Orders Model - Integration Tests', () => {
     });
 
     it('should update an order status', async () => {
-        const order = await Orders.create({
+        const order = await orders.create({
             address: '123 Main St',
             items: [{ productId: 1, quantity: 2 }],
             userId: 1,
@@ -65,20 +65,20 @@ describe('Orders Model - Integration Tests', () => {
         order.status = 'completed';
         await order.save();
 
-        const updatedOrder = await Orders.findOne({ where: { id: order.id } });
+        const updatedOrder = await orders.findOne({ where: { id: order.id } });
         expect(updatedOrder.status).toBe('completed');
     });
 
     it('should delete an order', async () => {
-        const order = await Orders.create({
+        const order = await orders.create({
             address: '123 Main St',
             items: [{ productId: 1, quantity: 2 }],
             userId: 1,
         });
 
-        await Orders.destroy({ where: { id: order.id } });
+        await orders.destroy({ where: { id: order.id } });
 
-        const deletedOrder = await Orders.findOne({ where: { id: order.id } });
+        const deletedOrder = await orders.findOne({ where: { id: order.id } });
         expect(deletedOrder).toBeNull();
     });
 });

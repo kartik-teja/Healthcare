@@ -1,7 +1,7 @@
 import React from "react";
 import { cartitems } from "../e-pharma/pharma";
 
-const Orders = () => {
+const orders = () => {
     const count = cartitems.length;
 
     return (
@@ -19,4 +19,4 @@ const Orders = () => {
     );
 };
 
-export default Orders;
+export default orders;

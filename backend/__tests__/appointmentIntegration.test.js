@@ -2,14 +2,14 @@
 
 const { Sequelize, DataTypes } = require('sequelize');
 const { beforeAll, afterAll, describe, it, expect } = require('@jest/globals');
-const AppointmentsModel = require('../models/Appointment');
+const appointmentsModel = require('../models/Appointment');
 
 let sequelize;
-let Appointments;
+let appointments;
 
 beforeAll(async () => {
     sequelize = new Sequelize('sqlite::memory:', { logging: false });
-    Appointments = AppointmentsModel(sequelize);
+    appointments = appointmentsModel(sequelize);
 
     await sequelize.sync();
 });
@@ -18,9 +18,9 @@ afterAll(async () => {
     await sequelize.close();
 });
 
-describe('Appointments Model - Integration Tests', () => {
+describe('appointments Model - Integration Tests', () => {
     it('should create an appointment', async () => {
-        const appointment = await Appointments.create({
+        const appointment = await appointments.create({
             time: 1627843620,
             doctorid: 33,
             patientid: 42,
@@ -36,7 +36,7 @@ describe('Appointments Model - Integration Tests', () => {
 
     it('should not create an appointment with an invalid status', async () => {
         await expect(
-            Appointments.create({
+            appointments.create({
                 time: 1627843620,
                 doctorid: 33,
                 patientid: 42,
@@ -46,20 +46,20 @@ describe('Appointments Model - Integration Tests', () => {
     });
 
     it('should read an appointment', async () => {
-        const appointment = await Appointments.create({
+        const appointment = await appointments.create({
             time: 1627843620,
             doctorid: 33,
             patientid: 42,
             status: 'pending',
         });
 
-        const foundAppointment = await Appointments.findOne({ where: { id: appointment.id } });
+        const foundAppointment = await appointments.findOne({ where: { id: appointment.id } });
         expect(foundAppointment).toBeDefined();
         expect(foundAppointment.time).toBe(1627843620);
     });
 
     it('should update an appointment status', async () => {
-        const appointment = await Appointments.create({
+        const appointment = await appointments.create({
             time: 1627843620,
             doctorid: 33,
             patientid: 42,
@@ -69,21 +69,21 @@ describe('Appointments Model - Integration Tests', () => {
         appointment.status = 'accepted';
         await appointment.save();
 
-        const updatedAppointment = await Appointments.findOne({ where: { id: appointment.id } });
+        const updatedAppointment = await appointments.findOne({ where: { id: appointment.id } });
         expect(updatedAppointment.status).toBe('accepted');
     });
 
     it('should delete an appointment', async () => {
-        const appointment = await Appointments.create({
+        const appointment = await appointments.create({
             time: 1627843620,
             doctorid: 33,
             patientid: 42,
             status: 'pending',
         });
 
-        await Appointments.destroy({ where: { id: appointment.id } });
+        await appointments.destroy({ where: { id: appointment.id } });
 
-        const deletedAppointment = await Appointments.findOne({ where: { id: appointment.id } });
+        const deletedAppointment = await appointments.findOne({ where: { id: appointment.id } });
         expect(deletedAppointment).toBeNull();
     });
 });

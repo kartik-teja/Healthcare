@@ -1,11 +1,17 @@
 'use strict';
 
 const { Model, DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize) => {
-    class Patients extends Model { }
+    class Patient extends Model {
+        // Instance method to compare password
+        async comparePassword(candidatePassword) {
+            return bcrypt.compare(candidatePassword, this.password);
+        }
+    }
 
-    Patients.init(
+    Patient.init(
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -27,13 +33,18 @@ module.exports = (sequelize) => {
             password: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                set(value) {
+                    // Hash the password before saving it to the database
+                    const hashedPassword = bcrypt.hashSync(value, 10);
+                    this.setDataValue('password', hashedPassword);
+                }
             },
         },
         {
             sequelize,
-            modelName: 'Patients',
+            modelName: 'Patient',
         }
     );
 
-    return Patients;
+    return Patient;
 };

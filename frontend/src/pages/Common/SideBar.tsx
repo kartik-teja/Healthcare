@@ -10,7 +10,7 @@ const Sidebar = () => {
                         <a href="/Dashboard" className="nav-link">Dashboard</a>
                     </li>
                     <li className="nav-item">
-                        <a href="/patient/appointments" className="nav-link">Appointments</a>
+                        <a href="/patient/appointments" className="nav-link">appointments</a>
                     </li>
                     <li className="nav-item">
                         <a href="/Dashboard" className="nav-link">Profile</a>

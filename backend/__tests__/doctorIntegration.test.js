@@ -2,45 +2,49 @@
 
 const { Sequelize } = require('sequelize');
 const { beforeAll, afterAll, describe, it, expect } = require('@jest/globals');
-const DoctorsModel = require('../models/Doctors');
+const doctorsModel = require('../models/Doctors');
 
 let sequelize;
-let Doctors;
+let doctors;
 
 beforeAll(async () => {
     sequelize = new Sequelize('sqlite::memory:', { logging: false });
-    Doctors = DoctorsModel(sequelize);
+    doctors = doctorsModel(sequelize);
 
-    await sequelize.sync();
+    await sequelize.sync({ force: true });
 });
 
 afterAll(async () => {
     await sequelize.close();
 });
 
-describe('Doctors Model - Integration Tests', () => {
+describe('doctors Model - Integration Tests', () => {
     it('should create a doctor', async () => {
-        const doctor = await Doctors.create({
-            name: 'Dr. John Doe',
-            specialisation: 'Cardiology',
-            email: 'john.doe@example.com',
-            phone: '123-456-7890',
-            address: '123 Main St, Anytown, USA',
-            password: 'securepassword',
-        });
+        try {
+            const doctor = await doctors.create({
+                name: 'Dr. John Doe',
+                specialisation: 'Cardiology',
+                email: 'john.doe@example.com',
+                phone: '123-456-7890',
+                address: '123 Main St, Anytown, USA',
+                password: 'securepassword',
+            });
 
-        expect(doctor).toBeDefined();
-        expect(doctor.name).toBe('Dr. John Doe');
-        expect(doctor.specialisation).toBe('Cardiology');
-        expect(doctor.email).toBe('john.doe@example.com');
-        expect(doctor.phone).toBe('123-456-7890');
-        expect(doctor.address).toBe('123 Main St, Anytown, USA');
-        expect(doctor.password).toBe('securepassword');
+            expect(doctor).toBeDefined();
+            expect(doctor.name).toBe('Dr. John Doe');
+            expect(doctor.specialisation).toBe('Cardiology');
+            expect(doctor.email).toBe('john.doe@example.com');
+            expect(doctor.phone).toBe('123-456-7890');
+            expect(doctor.address).toBe('123 Main St, Anytown, USA');
+        } catch (error) {
+            console.error('Error creating doctor:', error);
+            throw error;
+        }
     });
 
     it('should not create a doctor with an invalid email', async () => {
         await expect(
-            Doctors.create({
+            doctors.create({
                 name: 'Dr. Jane Doe',
                 specialisation: 'Neurology',
                 email: 'invalidemail',
@@ -52,7 +56,7 @@ describe('Doctors Model - Integration Tests', () => {
     });
 
     it('should read a doctor', async () => {
-        const doctor = await Doctors.create({
+        await doctors.create({
             name: 'Dr. John Doe',
             specialisation: 'Cardiology',
             email: 'john.doe@example.com',
@@ -61,13 +65,13 @@ describe('Doctors Model - Integration Tests', () => {
             password: 'securepassword',
         });
 
-        const foundDoctor = await Doctors.findOne({ where: { email: 'john.doe@example.com' } });
+        const foundDoctor = await doctors.findOne({ where: { email: 'john.doe@example.com' } });
         expect(foundDoctor).toBeDefined();
         expect(foundDoctor.name).toBe('Dr. John Doe');
     });
 
     it('should update a doctor', async () => {
-        const doctor = await Doctors.create({
+        const doctor = await doctors.create({
             name: 'Dr. John Doe',
             specialisation: 'Cardiology',
             email: 'john.doe@example.com',
@@ -79,12 +83,12 @@ describe('Doctors Model - Integration Tests', () => {
         doctor.name = 'Dr. John A. Doe';
         await doctor.save();
 
-        const updatedDoctor = await Doctors.findOne({ where: { email: 'john.doe@example.com' } });
+        const updatedDoctor = await doctors.findOne({ where: { email: 'john.doe@example.com' } });
         expect(updatedDoctor.name).toBe('Dr. John A. Doe');
     });
 
     it('should delete a doctor', async () => {
-        const doctor = await Doctors.create({
+        const doctor = await doctors.create({
             name: 'Dr. John Doe',
             specialisation: 'Cardiology',
             email: 'john.doe@example.com',
@@ -93,9 +97,9 @@ describe('Doctors Model - Integration Tests', () => {
             password: 'securepassword',
         });
 
-        await Doctors.destroy({ where: { email: doctor.email } });
+        await doctors.destroy({ where: { email: doctor.email } });
 
-        const deletedDoctor = await Doctors.findOne({ where: { email: 'john.doe@example.com' } });
+        const deletedDoctor = await doctors.findOne({ where: { email: 'john.doe@example.com' } });
         expect(deletedDoctor).toBeNull();
     });
 });

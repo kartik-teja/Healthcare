@@ -13,7 +13,7 @@ const Signin = () => {
 
     const navigate = useNavigate();
 
-    const handleDoctorSubmit = (e) => {
+    const handledoctorsubmit = (e) => {
         e.preventDefault();
         localStorage.setItem('username', doctorUsername);
         localStorage.setItem('userType', 'doctor');
@@ -21,7 +21,7 @@ const Signin = () => {
         navigate('/dashboard');
     };
 
-    const handlePatientSubmit = (e) => {
+    const handlepatientsubmit = (e) => {
         e.preventDefault();
         localStorage.setItem('username', patientUsername);
         localStorage.setItem('userType', 'patient');
@@ -42,7 +42,7 @@ const Signin = () => {
                     >
                         {hoverDoctor ? (
                             <>
-                                <form className='w-75 p-3 border rounded bg-light mx-auto' onSubmit={handleDoctorSubmit}>
+                                <form className='w-75 p-3 border rounded bg-light mx-auto' onSubmit={handledoctorsubmit}>
                                     <img className="mt-3" src="/public/doctor/logo.png" alt="Doctor Logo" height="100px" />
                                     <h4>Doctor Login</h4>
                                     <div className="mb-3">
@@ -77,7 +77,7 @@ const Signin = () => {
                     >
                         {hoverPatient ? (
                             <>
-                                <form className='w-75 p-3 border rounded bg-light mx-auto' onSubmit={handlePatientSubmit}>
+                                <form className='w-75 p-3 border rounded bg-light mx-auto' onSubmit={handlepatientsubmit}>
                                     <img className="mt-3 display-inline" src="/public/user/logo.png" alt="Patient Logo" height="100px" />
                                     <h4 className='display-inline'>Patient Login</h4>
                                     <div className="mb-3">

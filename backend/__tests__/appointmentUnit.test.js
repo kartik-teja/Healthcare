@@ -3,17 +3,17 @@
 const { describe, it, expect, beforeEach } = require('@jest/globals');
 const sinon = require('sinon');
 const { Model } = require('sequelize');
-const AppointmentsModel = require('../models/Appointment');
+const appointmentsModel = require('../models/Appointment');
 
-describe('Appointments Model - Unit Tests', () => {
-    let Appointments;
+describe('appointments Model - Unit Tests', () => {
+    let appointments;
 
     beforeEach(() => {
-        Appointments = AppointmentsModel({});
+        appointments = appointmentsModel({});
     });
 
     it('should validate the appointment status', async () => {
-        const appointment = Appointments.build({
+        const appointment = appointments.build({
             time: 1627843620,
             doctorid: 33,
             patientid: 42,
@@ -24,7 +24,7 @@ describe('Appointments Model - Unit Tests', () => {
     });
 
     it('should throw an error with an invalid status', async () => {
-        const invalidStatusAppointment = Appointments.build({
+        const invalidStatusAppointment = appointments.build({
             time: 1627843620,
             doctorid: 33,
             patientid: 42,
@@ -37,7 +37,7 @@ describe('Appointments Model - Unit Tests', () => {
     it('should save an appointment', async () => {
         const saveStub = sinon.stub(Model.prototype, 'save').resolvesThis();
 
-        const appointment = Appointments.build({
+        const appointment = appointments.build({
             time: 1627843620,
             doctorid: 33,
             patientid: 42,
@@ -53,7 +53,7 @@ describe('Appointments Model - Unit Tests', () => {
     it('should destroy an appointment', async () => {
         const destroyStub = sinon.stub(Model.prototype, 'destroy').resolves();
 
-        const appointment = Appointments.build({
+        const appointment = appointments.build({
             time: 1627843620,
             doctorid: 33,
             patientid: 42,
