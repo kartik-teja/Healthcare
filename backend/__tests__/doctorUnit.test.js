@@ -7,6 +7,7 @@ const doctorsModel = require('../models/Doctors');
 const salt = async () => { await bcrypt.genSalt(10) };
 
 
+
 describe('doctors Model - Unit Tests', () => {
   let doctors;
 

@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
          */
         static associate(models) {
             // Define associations here
-            // e.g., doctors.hasMany(models.appointments);
+            doctors.hasMany(models.appointments);
         }
     }
 
