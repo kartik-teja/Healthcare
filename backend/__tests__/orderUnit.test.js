@@ -2,14 +2,18 @@
 
 const { describe, it, expect, beforeEach } = require('@jest/globals');
 const sinon = require('sinon');
-const { Model } = require('sequelize');
+const { Sequelize, Model } = require('sequelize');
 const ordersModel = require('../models/Order');
 
 describe('orders Model - Unit Tests', () => {
     let orders;
+    let sequelize;
 
-    beforeEach(() => {
-        orders = ordersModel({});
+    beforeEach(async () => {
+        sequelize = new Sequelize('sqlite::memory:', { logging: false });
+        orders = ordersModel(sequelize);
+
+        await sequelize.sync();
     });
 
     it('should validate order details', async () => {

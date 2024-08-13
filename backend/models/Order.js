@@ -4,7 +4,9 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-    class orders extends Model { }
+    class orders extends Model {
+
+    }
 
     orders.init(
         {

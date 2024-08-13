@@ -59,7 +59,7 @@ describe('doctors Model - Integration Tests', () => {
         await doctors.create({
             name: 'Dr. John Doe',
             specialisation: 'Cardiology',
-            email: 'john.doe@example.com',
+            email: 'john.doe2@example.com',
             phone: '123-456-7890',
             address: '123 Main St, Anytown, USA',
             password: 'securepassword',
@@ -74,7 +74,7 @@ describe('doctors Model - Integration Tests', () => {
         const doctor = await doctors.create({
             name: 'Dr. John Doe',
             specialisation: 'Cardiology',
-            email: 'john.doe@example.com',
+            email: 'john.doe3@example.com',
             phone: '123-456-7890',
             address: '123 Main St, Anytown, USA',
             password: 'securepassword',
@@ -83,7 +83,7 @@ describe('doctors Model - Integration Tests', () => {
         doctor.name = 'Dr. John A. Doe';
         await doctor.save();
 
-        const updatedDoctor = await doctors.findOne({ where: { email: 'john.doe@example.com' } });
+        const updatedDoctor = await doctors.findOne({ where: { email: 'john.doe3@example.com' } });
         expect(updatedDoctor.name).toBe('Dr. John A. Doe');
     });
 
@@ -91,7 +91,7 @@ describe('doctors Model - Integration Tests', () => {
         const doctor = await doctors.create({
             name: 'Dr. John Doe',
             specialisation: 'Cardiology',
-            email: 'john.doe@example.com',
+            email: 'john.doe4@example.com',
             phone: '123-456-7890',
             address: '123 Main St, Anytown, USA',
             password: 'securepassword',
@@ -99,7 +99,7 @@ describe('doctors Model - Integration Tests', () => {
 
         await doctors.destroy({ where: { email: doctor.email } });
 
-        const deletedDoctor = await doctors.findOne({ where: { email: 'john.doe@example.com' } });
+        const deletedDoctor = await doctors.findOne({ where: { email: 'john.doe4@example.com' } });
         expect(deletedDoctor).toBeNull();
     });
 });

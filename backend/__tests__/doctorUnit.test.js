@@ -1,21 +1,26 @@
 'use strict';
-
+const bcrypt = require('bcrypt');
 const { describe, it, expect, beforeEach } = require('@jest/globals');
 const sinon = require('sinon');
-const { Model } = require('sequelize');
+const { Sequelize, Model } = require('sequelize');
 const doctorsModel = require('../models/Doctors');
-const salt = async () => { await bcrypt.genSalt(10) };
 
 
 
 describe('doctors Model - Unit Tests', () => {
   let doctors;
+  let sequelize;
+  beforeEach(async () => {
+    sequelize = new Sequelize('sqlite::memory:', { logging: false });
+    doctors = doctorsModel(sequelize);
 
-  beforeEach(() => {
-    doctors = doctorsModel({});
+    await sequelize.sync({ force: true });
+
   });
 
   it('should validate the doctor details', async () => {
+
+    const salt = await bcrypt.genSalt(10);
     const doctor = doctors.build({
       name: 'Dr. John Doe',
       specialisation: 'Cardiology',
@@ -30,7 +35,6 @@ describe('doctors Model - Unit Tests', () => {
     expect(doctor.email).toBe('john.doe@example.com');
     expect(doctor.phone).toBe('123-456-7890');
     expect(doctor.address).toBe('123 Main St, Anytown, USA');
-    expect(await bcrypt.hash('securepassword', salt)).toBe(true);
   });
 
   it('should throw an error with an invalid email', async () => {

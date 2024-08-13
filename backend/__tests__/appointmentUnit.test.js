@@ -1,15 +1,20 @@
 'use strict';
 
+
 const { describe, it, expect, beforeEach } = require('@jest/globals');
 const sinon = require('sinon');
-const { Model } = require('sequelize');
+const { Sequelize, Model } = require('sequelize');
 const appointmentsModel = require('../models/Appointment');
 
 describe('appointments Model - Unit Tests', () => {
     let appointments;
+    let sequelize;
 
-    beforeEach(() => {
-        appointments = appointmentsModel({});
+    beforeEach(async () => {
+        sequelize = new Sequelize('sqlite::memory:', { logging: false });
+        appointments = appointmentsModel(sequelize);
+
+        await sequelize.sync();
     });
 
     it('should validate the appointment status', async () => {
