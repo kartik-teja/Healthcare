@@ -45,13 +45,21 @@ jobs:
           docker-compose -f docker-compose.yml up -d
           EOF
 
-      - name: Notify Slack
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: '#deployments'
-          SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
-          SLACK_MESSAGE: 'Deployment ${{ job.status }} for commit ${{ github.sha }}'
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Notify Discord on success
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{"content":"Build and deployment successful!"}' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
+  
+      - name: Notify Discord on failure
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{"content":"Build or deployment failed!"}' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
 
   test:
     runs-on: ubuntu-latest
@@ -100,3 +108,8 @@ env:
   DB_USER: postgres
   DB_PASSWORD: postgres
   DB_HOST: 127.0.0.1
+
+#DB_NAME: This is the name of the PostgreSQL database used in your test environment. It's set to database_test and is passed to the PostgreSQL service as well as the Node.js application running in your CI environment.
+#DB_USER: The PostgreSQL user that is used to connect to the database. In this case, it's set to postgres.
+#DB_PASSWORD: The password for the PostgreSQL user, which is also set to postgres.
+#DB_HOST: This is the host address for the PostgreSQL service. It's set to 127.0.0.1, which refers to the localhost within the context of the GitHub Actions runner.
